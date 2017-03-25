@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright (C) 2016 Marvin Herman Froeder (marvin@marvinformatics.com)
+    Copyright (C) 2017 Marvin Herman Froeder (marvin@marvinformatics.com)
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -20,13 +20,13 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.marvinformatics</groupId>
-  <artifactId>${name}</artifactId>
+  <artifactId>querydsl-cassandra</artifactId>
   <version>0.1-SNAPSHOT</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <coveralls.token></coveralls.token>
+    <coveralls.token>1PejAyjCuyCS70wiwFI1sIuqHgfxTmpfd</coveralls.token>
     <java.version>1.8</java.version>
   </properties>
 
@@ -224,9 +224,9 @@
     </plugins>
   </build>
 
-  <url>https://github.com/${owner}/${name}/</url>
+  <url>https://github.com/velo/querydsl-cassandra/</url>
 
-  <inceptionYear>${year}</inceptionYear>
+  <inceptionYear>2017</inceptionYear>
 
   <licenses>
     <license>
@@ -246,9 +246,9 @@
   </developers>
 
   <scm>
-    <connection>scm:git:git@github.com:${owner}/${name}.git</connection>
-    <developerConnection>scm:git:git@github.com:${owner}/${name}.git</developerConnection>
-    <url>https://github.com/${owner}/${name}/</url>
+    <connection>scm:git:git@github.com:velo/querydsl-cassandra.git</connection>
+    <developerConnection>scm:git:git@github.com:velo/querydsl-cassandra.git</developerConnection>
+    <url>https://github.com/velo/querydsl-cassandra/</url>
   </scm>
 
   <distributionManagement>

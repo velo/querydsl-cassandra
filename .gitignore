@@ -197,3 +197,6 @@ fabric.properties
 ### Intellij Patch ###
 *.iml
 
+### VisualStudioCode ###
+.vscode/*
+
