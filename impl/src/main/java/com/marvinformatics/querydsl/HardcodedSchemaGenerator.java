@@ -1,3 +1,18 @@
+/**
+ * Copyright (C) 2017 Marvin Herman Froeder (marvin@marvinformatics.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.marvinformatics.querydsl;
 
 import com.datastax.driver.core.*;
@@ -13,10 +28,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-public class HardcodedSchemaGenerator
-{
-    public static void main(String[] args) throws Exception
-    {
+public class HardcodedSchemaGenerator {
+    public static void main(String[] args) throws Exception {
         Cluster cluster = Cluster.builder()
                 .addContactPoints("localhost")
                 .withPort(9042)
@@ -24,11 +37,9 @@ public class HardcodedSchemaGenerator
 
         Metadata metadata = cluster.getMetadata();
         List<KeyspaceMetadata> keyspaces = metadata.getKeyspaces();
-        for (KeyspaceMetadata keyspace : keyspaces)
-        {
+        for (KeyspaceMetadata keyspace : keyspaces) {
             Collection<TableMetadata> tables = keyspace.getTables();
-            for (TableMetadata table : tables)
-            {
+            for (TableMetadata table : tables) {
                 String keyspaceName = keyspace.getName();
                 String packageName = CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, keyspaceName)
                         .toLowerCase();
@@ -40,8 +51,7 @@ public class HardcodedSchemaGenerator
                 directory.mkdirs();
                 File file = new File(directory, className + ".java");
                 file.delete();
-                try (PrintWriter pw = new PrintWriter(file);)
-                {
+                try (PrintWriter pw = new PrintWriter(file);) {
                     pw.println("package com.marvinformatics.test." + packageName + ";");
                     pw.println();
                     String variableName = CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, tableName);
@@ -54,20 +64,17 @@ public class HardcodedSchemaGenerator
                             + "(\"" + variableName + "\");");
 
                     List<ColumnMetadata> columns = table.getColumns();
-                    for (ColumnMetadata column : columns)
-                    {
+                    for (ColumnMetadata column : columns) {
                         String columnName = column.getName();
                         String fieldName = CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, columnName);
                         Optional<Class<? extends Path>> pathType = getPathType(column.getType());
 
-                        if (pathType.isPresent())
-                        {
+                        if (pathType.isPresent()) {
                             pw.println();
                             pw.println(
                                     "    public final " + toString(pathType, column.getType()) + " " + fieldName
                                             + " = " + create(columnName, column.getType()) + ";");
-                        } else
-                        {
+                        } else {
                             pw.println();
                             pw.println(
                                     "    // public final " + column.getType() + " " + fieldName + " = null\");");
@@ -88,10 +95,8 @@ public class HardcodedSchemaGenerator
         cluster.close();
     }
 
-    private static String create(String columnName, DataType type)
-    {
-        switch (type.getName())
-        {
+    private static String create(String columnName, DataType type) {
+        switch (type.getName()) {
         case TEXT:
             return "createString(\"" + columnName + "\")";
         case BOOLEAN:
@@ -119,10 +124,8 @@ public class HardcodedSchemaGenerator
         return "createSimple(\"" + columnName + "\", " + javaType(type) + ".class)";
     }
 
-    private static String javaType(DataType type)
-    {
-        switch (type.getName())
-        {
+    private static String javaType(DataType type) {
+        switch (type.getName()) {
         case TEXT:
             return String.class.getName();
         case BOOLEAN:
@@ -142,12 +145,10 @@ public class HardcodedSchemaGenerator
         return Object.class.getName();
     }
 
-    private static String toString(Optional<Class<? extends Path>> pathType, DataType type)
-    {
+    private static String toString(Optional<Class<? extends Path>> pathType, DataType type) {
         String pathString = pathType.get().getName();
 
-        switch (type.getName())
-        {
+        switch (type.getName()) {
         case INT:
         case DOUBLE:
         case BIGINT:
@@ -166,8 +167,7 @@ public class HardcodedSchemaGenerator
         return pathString;
     }
 
-    private static String pathName(DataType type)
-    {
+    private static String pathName(DataType type) {
         Optional<Class<? extends Path>> pathType = getPathType(type);
         if (pathType.isPresent())
             return toString(pathType, type);
@@ -175,10 +175,8 @@ public class HardcodedSchemaGenerator
             return type.toString();
     }
 
-    private static Optional<Class<? extends Path>> getPathType(DataType type)
-    {
-        switch (type.getName())
-        {
+    private static Optional<Class<? extends Path>> getPathType(DataType type) {
+        switch (type.getName()) {
         case TEXT:
             return Optional.of(StringPath.class);
         case BOOLEAN:
